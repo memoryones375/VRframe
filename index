@@ -2,10 +2,11 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Memory Ones</title>
+  <title>Memory Ones - Birthday AR</title>
 
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -13,19 +14,22 @@
   <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
+
   <style>
 
     html,
     body {
+
       margin: 0;
       padding: 0;
+
       width: 100%;
       height: 100%;
+
       overflow: hidden;
-      background: black;
+
     }
 
-    /* Sound Button */
 
     #soundButton {
 
@@ -52,15 +56,10 @@
 
       font-weight: bold;
 
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-
       display: none;
 
       cursor: pointer;
-    }
 
-    #soundButton:active {
-      transform: translateX(-50%) scale(0.95);
     }
 
   </style>
@@ -94,13 +93,13 @@
     device-orientation-permission-ui="enabled: false">
 
 
-    <!-- ASSETS -->
+    <!-- VIDEO -->
 
     <a-assets>
 
       <video
 
-        id="birthdayVideo"
+        id="myVideo"
 
         src="./birthday.mp4"
 
@@ -168,13 +167,15 @@
   <script>
 
 
-    // Get Elements
+    // =========================
+    // GET ELEMENTS
+    // =========================
 
     const target =
       document.querySelector("#target");
 
     const video =
-      document.querySelector("#birthdayVideo");
+      document.querySelector("#myVideo");
 
     const arVideo =
       document.querySelector("#arVideo");
@@ -184,25 +185,26 @@
 
 
 
-    // Set Birthday Video as AR Texture
+    // =========================
+    // SET VIDEO AS AR TEXTURE
+    // =========================
 
     arVideo.setAttribute(
       "src",
-      "#birthdayVideo"
+      "#myVideo"
     );
 
 
 
-    // ================================
+    // =========================
     // TARGET FOUND
-    // ================================
+    // =========================
 
     target.addEventListener(
       "targetFound",
       function () {
 
-        console.log("🎯 BIRTHDAY TARGET FOUND");
-
+        console.log("TARGET FOUND");
 
 
         // Start video from beginning
@@ -210,19 +212,19 @@
         video.currentTime = 0;
 
 
-
         // Start muted
 
         video.muted = true;
 
 
+        // Play video
 
         video.play()
 
           .then(function () {
 
             console.log(
-              "🎂 BIRTHDAY VIDEO PLAYING"
+              "BIRTHDAY VIDEO PLAYING"
             );
 
           })
@@ -237,28 +239,27 @@
           });
 
 
-
         // Show sound button
 
-        soundButton.style.display = "block";
+        soundButton.style.display =
+          "block";
 
       }
     );
 
 
 
-    // ================================
+    // =========================
     // SOUND BUTTON
-    // ================================
+    // =========================
 
     soundButton.addEventListener(
       "click",
       function () {
 
         console.log(
-          "🔊 SOUND BUTTON CLICKED"
+          "SOUND BUTTON CLICKED"
         );
-
 
 
         // Enable sound
@@ -268,15 +269,15 @@
         video.volume = 1.0;
 
 
+        // Continue video with sound
 
         video.play()
 
           .then(function () {
 
             console.log(
-              "🎵 BIRTHDAY VIDEO + SOUND PLAYING"
+              "BIRTHDAY VIDEO + SOUND PLAYING"
             );
-
 
 
             // Hide button
@@ -300,24 +301,22 @@
 
 
 
-    // ================================
+    // =========================
     // TARGET LOST
-    // ================================
+    // =========================
 
     target.addEventListener(
       "targetLost",
       function () {
 
         console.log(
-          "❌ TARGET LOST"
+          "TARGET LOST"
         );
-
 
 
         // Pause video
 
         video.pause();
-
 
 
         // Hide sound button
