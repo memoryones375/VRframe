@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,179 +14,324 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    html, body {
+
+    html,
+    body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
+      background: black;
     }
 
+    /* Sound Button */
+
     #soundButton {
+
       position: fixed;
+
       z-index: 99999;
+
       left: 50%;
       bottom: 30px;
+
       transform: translateX(-50%);
 
       padding: 15px 25px;
+
       border: none;
+
       border-radius: 30px;
 
       background: black;
+
       color: white;
 
       font-size: 18px;
+
       font-weight: bold;
 
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+
       display: none;
+
+      cursor: pointer;
     }
+
+    #soundButton:active {
+      transform: translateX(-50%) scale(0.95);
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <!-- Sound Button -->
+
+  <!-- SOUND BUTTON -->
+
   <button id="soundButton">
     🔊 PLAY WITH SOUND
   </button>
 
 
+
+  <!-- AR SCENE -->
+
   <a-scene
+
     mindar-image="imageTargetSrc: ./targets.mind;"
+
     color-space="sRGB"
+
     renderer="colorManagement: true"
+
     vr-mode-ui="enabled: false"
+
     device-orientation-permission-ui="enabled: false">
 
 
-    <!-- Video -->
+    <!-- ASSETS -->
+
     <a-assets>
 
       <video
-        id="myVideo"
+
+        id="birthdayVideo"
+
         src="./birthday.mp4"
+
         preload="auto"
+
         loop
+
         muted
+
         playsinline
+
         webkit-playsinline>
+
       </video>
 
     </a-assets>
 
 
-    <!-- Camera -->
+
+    <!-- CAMERA -->
+
     <a-camera
+
       position="0 0 0"
+
       look-controls="enabled: false">
+
     </a-camera>
 
 
-    <!-- Image Target -->
+
+    <!-- IMAGE TARGET -->
+
     <a-entity
+
       id="target"
+
       mindar-image-target="targetIndex: 0">
 
 
-      <!-- PORTRAIT VIDEO -->
+      <!-- BIRTHDAY VIDEO -->
+
       <a-video
+
         id="arVideo"
-        width="0.5625"
-        height="1"
+
+        width="1"
+
+        height="0.5625"
+
         position="0 0 0"
+
         rotation="0 0 0">
+
       </a-video>
 
 
     </a-entity>
 
+
   </a-scene>
+
 
 
   <script>
 
-    const target = document.querySelector("#target");
 
-    const video = document.querySelector("#myVideo");
+    // Get Elements
 
-    const arVideo = document.querySelector("#arVideo");
+    const target =
+      document.querySelector("#target");
 
-    const soundButton = document.querySelector("#soundButton");
+    const video =
+      document.querySelector("#birthdayVideo");
 
+    const arVideo =
+      document.querySelector("#arVideo");
 
-    // Connect video to AR
-    arVideo.setAttribute("src", "#myVideo");
-
-
-    // When photo is detected
-    target.addEventListener("targetFound", function () {
-
-      console.log("TARGET FOUND");
-
-      video.currentTime = 0;
-
-      video.muted = true;
+    const soundButton =
+      document.querySelector("#soundButton");
 
 
-      video.play()
-        .then(function () {
 
-          console.log("VIDEO PLAYING");
+    // Set Birthday Video as AR Texture
 
-        })
-        .catch(function (error) {
-
-          console.log("VIDEO ERROR:", error);
-
-        });
+    arVideo.setAttribute(
+      "src",
+      "#birthdayVideo"
+    );
 
 
-      // Show sound button
-      soundButton.style.display = "block";
 
-    });
+    // ================================
+    // TARGET FOUND
+    // ================================
 
+    target.addEventListener(
+      "targetFound",
+      function () {
 
-    // Sound button
-    soundButton.addEventListener("click", function () {
-
-      console.log("SOUND BUTTON CLICKED");
-
-      video.muted = false;
-
-      video.volume = 1.0;
+        console.log("🎯 BIRTHDAY TARGET FOUND");
 
 
-      video.play()
-        .then(function () {
 
-          console.log("VIDEO + SOUND PLAYING");
+        // Start video from beginning
 
-          soundButton.style.display = "none";
-
-        })
-        .catch(function (error) {
-
-          console.log("AUDIO ERROR:", error);
-
-        });
-
-    });
+        video.currentTime = 0;
 
 
-    // When photo is no longer detected
-    target.addEventListener("targetLost", function () {
 
-      console.log("TARGET LOST");
+        // Start muted
 
-      video.pause();
+        video.muted = true;
 
-      soundButton.style.display = "none";
 
-    });
+
+        video.play()
+
+          .then(function () {
+
+            console.log(
+              "🎂 BIRTHDAY VIDEO PLAYING"
+            );
+
+          })
+
+          .catch(function (error) {
+
+            console.log(
+              "VIDEO ERROR:",
+              error
+            );
+
+          });
+
+
+
+        // Show sound button
+
+        soundButton.style.display = "block";
+
+      }
+    );
+
+
+
+    // ================================
+    // SOUND BUTTON
+    // ================================
+
+    soundButton.addEventListener(
+      "click",
+      function () {
+
+        console.log(
+          "🔊 SOUND BUTTON CLICKED"
+        );
+
+
+
+        // Enable sound
+
+        video.muted = false;
+
+        video.volume = 1.0;
+
+
+
+        video.play()
+
+          .then(function () {
+
+            console.log(
+              "🎵 BIRTHDAY VIDEO + SOUND PLAYING"
+            );
+
+
+
+            // Hide button
+
+            soundButton.style.display =
+              "none";
+
+          })
+
+          .catch(function (error) {
+
+            console.log(
+              "AUDIO ERROR:",
+              error
+            );
+
+          });
+
+      }
+    );
+
+
+
+    // ================================
+    // TARGET LOST
+    // ================================
+
+    target.addEventListener(
+      "targetLost",
+      function () {
+
+        console.log(
+          "❌ TARGET LOST"
+        );
+
+
+
+        // Pause video
+
+        video.pause();
+
+
+
+        // Hide sound button
+
+        soundButton.style.display =
+          "none";
+
+      }
+    );
+
 
   </script>
 
+
 </body>
+
 </html>
